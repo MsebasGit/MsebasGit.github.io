@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sebastian Medrano | Linux, Haskell, C++ & IoT / Edge</title>
+  <meta name="description" content="Portafolio de Sebastian Jorge Medrano Chacolla. Estudiante de Ingeniería de Sistemas, autor de fuyu-gpio en Hackage, desarrollador de sistemas Linux, Haskell, C++ e IoT.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Devicon CDN for tech icons -->
+  <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+  
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>λ</text></svg>">
+</head>
+<body>
+  <div id="elm-app"></div>
+
+  <!-- Elm Compiled Application -->
+  <script src="main.js"></script>
+  <script>
+    if (typeof Elm !== 'undefined' && Elm.Main) {
+      Elm.Main.init({
+        node: document.getElementById('elm-app')
+      });
+    } else {
+      console.error("Elm.Main no está disponible. Ejecuta 'elm make src/Main.elm --output=main.js'");
+    }
+  </script>
+</body>
+</html>
