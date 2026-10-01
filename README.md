@@ -34,15 +34,24 @@ portfolio/
   ```
   Luego abre en tu navegador `http://localhost:8000`.
 
-## Despliegue en GitHub Pages (`https://bassgt.github.io`)
+## Despliegue en GitHub Pages
 
-1. En GitHub, crea el repositorio con el nombre exacto: `BassGT.github.io` (o clónalo si ya lo creaste).
-2. Copia los archivos del portafolio (`index.html`, `style.css`, `main.js`, `cv.pdf`) a la raíz de ese repositorio.
-3. Haz commit y push a la rama `main`:
+El repositorio Git local ya está inicializado y listo para subir a GitHub Pages:
+
+### Opción A: Desplegar en MsebasGit (`https://msebasgit.github.io`)
+1. En GitHub (con la cuenta **MsebasGit**), crea un repositorio público llamado:
+   `MsebasGit.github.io` (en blanco, sin inicializar con README/license).
+2. Ejecuta en tu terminal dentro de la carpeta `portfolio`:
    ```bash
-   git add .
-   git commit -m "Deploy portfolio built with Elm"
-   git push origin main
+   git push -u origin main
    ```
-4. ¡Listo! En segundos tu sitio estará publicado y disponible globalmente en:
-   **https://bassgt.github.io**
+3. ¡Listo! En segundos tu sitio estará en vivo en **https://msebasgit.github.io**.
+
+### Opción B: Desplegar en BassGT (`https://bassgt.github.io`)
+1. En GitHub (con la cuenta **BassGT**), crea un repositorio público llamado:
+   `BassGT.github.io`.
+2. Ejecuta:
+   ```bash
+   git push -u bassgt main
+   ```
+3. ¡Listo! Tu sitio estará disponible en **https://bassgt.github.io**.
