@@ -24,6 +24,7 @@ type alias Model =
     , activeProjectTab : ProjectTab
     , activeModal : ActiveModal
     , showcaseTab : ShowcaseTab
+    , pongTab : PongTab
     , isLightPaper : Bool
     }
 
@@ -40,11 +41,13 @@ type ProjectTab
     | TabFuyuGpio
     | TabFuyuGpioDirect
     | TabWaterTank
+    | TabPong
 
 
 type ActiveModal
     = NoModal
     | ModalWaterTank
+    | ModalPong
 
 
 type ShowcaseTab
@@ -53,12 +56,19 @@ type ShowcaseTab
     | ShowcaseArch
 
 
+type PongTab
+    = PongVideos
+    | PongGallery
+    | PongArch
+
+
 initialModel : Model
 initialModel =
     { activeTab = TabPodman
     , activeProjectTab = TabAll
     , activeModal = NoModal
     , showcaseTab = ShowcaseVideos
+    , pongTab = PongVideos
     , isLightPaper = False
     }
 
@@ -71,6 +81,7 @@ type Msg
     = SelectTab TerminalTab
     | SelectProjectTab ProjectTab
     | SelectShowcaseTab ShowcaseTab
+    | SelectPongTab PongTab
     | OpenModal ActiveModal
     | CloseModal
     | ToggleTheme
@@ -88,6 +99,9 @@ update msg model =
 
         SelectShowcaseTab sTab ->
             { model | showcaseTab = sTab }
+
+        SelectPongTab pTab ->
+            { model | pongTab = pTab }
 
         OpenModal modal ->
             { model | activeModal = modal }
@@ -138,6 +152,8 @@ viewNavbar model =
             [ a [ href "#proyectos" ] [ text "Proyectos" ]
             , button [ class "nav-link-btn", onClick (OpenModal ModalWaterTank) ]
                 [ text "Tanque IoT (Demo)" ]
+            , button [ class "nav-link-btn", onClick (OpenModal ModalPong) ]
+                [ text "Pong 74HC595 (Demo)" ]
             , a [ href "#habilidades" ] [ text "Habilidades" ]
             , a [ href "#certificaciones" ] [ text "Certificaciones" ]
             , a [ href "cv.pdf", target "_blank", rel "noopener noreferrer", class "btn-cv" ]
@@ -305,7 +321,7 @@ viewProjects model =
                 [ classList [ ( "filter-btn", True ), ( "active", model.activeProjectTab == TabAll ) ]
                 , onClick (SelectProjectTab TabAll)
                 ]
-                [ text "Todos los Proyectos (3)" ]
+                [ text "Todos los Proyectos (4)" ]
             , button
                 [ classList [ ( "filter-btn", True ), ( "active", model.activeProjectTab == TabFuyuGpio ) ]
                 , onClick (SelectProjectTab TabFuyuGpio)
@@ -321,6 +337,11 @@ viewProjects model =
                 , onClick (SelectProjectTab TabWaterTank)
                 ]
                 [ text "Sistema IoT Tanque de Agua" ]
+            , button
+                [ classList [ ( "filter-btn", True ), ( "active", model.activeProjectTab == TabPong ) ]
+                , onClick (SelectProjectTab TabPong)
+                ]
+                [ text "Pong 74HC595 (MicroPython)" ]
             ]
         , div [ class "projects-grid" ] (filteredProjectCards model.activeProjectTab)
         ]
@@ -333,6 +354,7 @@ filteredProjectCards tab =
             [ cardFuyuGpio
             , cardFuyuGpioDirect
             , cardWaterTankIoT
+            , cardPong74HC595
             ]
 
         TabFuyuGpio ->
@@ -343,6 +365,9 @@ filteredProjectCards tab =
 
         TabWaterTank ->
             [ cardWaterTankIoT ]
+
+        TabPong ->
+            [ cardPong74HC595 ]
 
 
 cardFuyuGpio : Html Msg
@@ -537,6 +562,56 @@ cardWaterTankIoT =
         ]
 
 
+cardPong74HC595 : Html Msg
+cardPong74HC595 =
+    div [ class "project-card featured" ]
+        [ div [ class "project-card-header" ]
+            [ div [ class "project-badges" ]
+                [ span [ class "badge" ] [ text "MicroPython" ]
+                , span [ class "badge" ] [ text "RP2040 (Pico)" ]
+                , span [ class "badge" ] [ text "74HC595 (Cascada)" ]
+                , span [ class "badge" ] [ text "Matriz LED 8x8" ]
+                , span [ class "badge" ] [ text "Multithreading" ]
+                , span [ class "badge badge-accent" ] [ text "Hardware" ]
+                ]
+            , button [ class "card-ext-btn", onClick (OpenModal ModalPong), title "Abrir Demostración & Hardware" ]
+                [ i [ class "fa-solid fa-circle-play" ] [] ]
+            ]
+        , h3 [ class "project-title" ] [ text "PiPong: Pong en Hardware con Registros 74HC595" ]
+        , p [ class "project-subtitle" ] [ text "Juego arcade interactivo en tiempo real con Raspberry Pi Pico, matriz LED y MicroPython" ]
+        , p [ class "project-summary" ]
+            [ text "Sistema de juego Pong bare-metal implementado en "
+            , strong [] [ text "MicroPython" ]
+            , text " sobre microcontrolador "
+            , strong [] [ text "Raspberry Pi Pico (RP2040)" ]
+            , text ". Control y multiplexado dinámico de una matriz de LEDs 8x8 mediante dos registros de desplazamiento "
+            , strong [] [ text "74HC595 en cascada" ]
+            , text ", persistencia de visión sin parpadeo y arquitectura de ejecución concurrente con "
+            , code [] [ text "_thread" ]
+            , text "."
+            ]
+        , div [ class "project-spec-box" ]
+            [ h4 [ class "spec-box-title" ] [ text "Fundamentos Técnicos & Arquitectura Embebida:" ]
+            , ul [ class "spec-list" ]
+                [ li [] [ text "Expansión de E/S con 74HC595: Control independiente de 8 ánodos y 8 cátodos usando solo 3 pines del microcontrolador (Data, Clock, Latch)." ]
+                , li [] [ text "Concurrencia Dual-Core (_thread): Hilo dedicado para el refresco y multiplexado a alta frecuencia (80 µs), desacoplado del muestreo asíncrono de los 5 pulsadores." ]
+                , li [] [ text "Motor de Física y Colisiones Bitwise: Álgebra booleana y desplazamientos de bits (<<, >>) para las coordenadas de la bola, rebotes y detección de paletas." ]
+                , li [] [ text "Renderizado de Fuentes Bitmap: Marquesinas deslizantes con texto ('USFA PONG') y pantallas de victoria ('P1/P2 WON') codificadas en matrices de bytes." ]
+                ]
+            ]
+        , div [ class "project-card-footer" ]
+            [ button [ class "btn-modal-trigger", onClick (OpenModal ModalPong) ]
+                [ i [ class "fa-solid fa-circle-play" ] []
+                , text " Ver Demostración en Video & Galería"
+                ]
+            , a [ href "https://github.com/MsebasGit/Pong-with-74HC595", target "_blank", rel "noopener noreferrer", class "project-link" ]
+                [ i [ class "fa-brands fa-github" ] [], text " Repositorio GitHub" ]
+            , a [ href "https://youtu.be/tyRWjlNCxHE", target "_blank", rel "noopener noreferrer", class "project-link" ]
+                [ i [ class "fa-brands fa-youtube" ] [], text " Video en YouTube" ]
+            ]
+        ]
+
+
 
 -- MODAL POP-UP (DEMOSTRACIÓN EN VIVO & ARQUITECTURA)
 
@@ -548,63 +623,132 @@ viewModal model =
             text ""
 
         ModalWaterTank ->
-            div [ class "modal-container" ]
-                [ div [ class "modal-backdrop", onClick CloseModal ] []
-                , div [ class "modal-window", attribute "role" "dialog", attribute "aria-modal" "true" ]
-                    [ div [ class "modal-header" ]
-                        [ div [ class "modal-header-text" ]
-                            [ span [ class "section-tag" ] [ text "DEMOSTRACIÓN EN VIVO & ARQUITECTURA" ]
-                            , h2 [ class "modal-title" ] [ text "Tanque IoT: Hardware, Edge AI & Node-RED" ]
-                            , p [ class "modal-desc" ]
-                                [ text "Sistema integral de telemetría y control automático con ESP32, broker MQTT Mosquitto, API Gateway en Node-RED, base de datos SQLite y modelo phi3.5:latest vía Telegram." ]
-                            ]
-                        , button [ class "btn-close-modal", onClick CloseModal, title "Cerrar ventana emergente" ]
-                            [ i [ class "fa-solid fa-xmark" ] []
-                            , span [] [ text " Cerrar" ]
-                            ]
-                        ]
-                    , div [ class "showcase-tabs" ]
-                        [ button
-                            [ classList [ ( "showcase-tab-btn", True ), ( "active", model.showcaseTab == ShowcaseVideos ) ]
-                            , onClick (SelectShowcaseTab ShowcaseVideos)
-                            ]
-                            [ i [ class "fa-solid fa-film" ] []
-                            , text " Videos de Funcionamiento"
-                            ]
-                        , button
-                            [ classList [ ( "showcase-tab-btn", True ), ( "active", model.showcaseTab == ShowcaseFlows ) ]
-                            , onClick (SelectShowcaseTab ShowcaseFlows)
-                            ]
-                            [ i [ class "fa-solid fa-diagram-project" ] []
-                            , text " Flujos en Node-RED"
-                            ]
-                        , button
-                            [ classList [ ( "showcase-tab-btn", True ), ( "active", model.showcaseTab == ShowcaseArch ) ]
-                            , onClick (SelectShowcaseTab ShowcaseArch)
-                            ]
-                            [ i [ class "fa-solid fa-server" ] []
-                            , text " Arquitectura & Router IA"
-                            ]
-                        ]
-                    , div [ class "modal-scrollable-body" ]
-                        [ case model.showcaseTab of
-                            ShowcaseVideos ->
-                                viewShowcaseVideos
+            viewWaterTankModal model
 
-                            ShowcaseFlows ->
-                                viewShowcaseFlows
+        ModalPong ->
+            viewPongModal model
 
-                            ShowcaseArch ->
-                                viewShowcaseArch
-                        ]
-                    , div [ class "modal-footer" ]
-                        [ button [ class "btn-modal-close-bottom", onClick CloseModal ]
-                            [ i [ class "fa-solid fa-check" ] []
-                            , text " Finalizar / Cerrar Demostración"
-                            ]
-                        ]
+
+viewWaterTankModal : Model -> Html Msg
+viewWaterTankModal model =
+    div [ class "modal-container" ]
+        [ div [ class "modal-backdrop", onClick CloseModal ] []
+        , div [ class "modal-window", attribute "role" "dialog", attribute "aria-modal" "true" ]
+            [ div [ class "modal-header" ]
+                [ div [ class "modal-header-text" ]
+                    [ span [ class "section-tag" ] [ text "DEMOSTRACIÓN EN VIVO & ARQUITECTURA" ]
+                    , h2 [ class "modal-title" ] [ text "Tanque IoT: Hardware, Edge AI & Node-RED" ]
+                    , p [ class "modal-desc" ]
+                        [ text "Sistema integral de telemetría y control automático con ESP32, broker MQTT Mosquitto, API Gateway en Node-RED, base de datos SQLite y modelo phi3.5:latest vía Telegram." ]
+                    ]
+                , button [ class "btn-close-modal", onClick CloseModal, title "Cerrar ventana emergente" ]
+                    [ i [ class "fa-solid fa-xmark" ] []
+                    , span [] [ text " Cerrar" ]
                     ]
                 ]
+            , div [ class "showcase-tabs" ]
+                [ button
+                    [ classList [ ( "showcase-tab-btn", True ), ( "active", model.showcaseTab == ShowcaseVideos ) ]
+                    , onClick (SelectShowcaseTab ShowcaseVideos)
+                    ]
+                    [ i [ class "fa-solid fa-film" ] []
+                    , text " Videos de Funcionamiento"
+                    ]
+                , button
+                    [ classList [ ( "showcase-tab-btn", True ), ( "active", model.showcaseTab == ShowcaseFlows ) ]
+                    , onClick (SelectShowcaseTab ShowcaseFlows)
+                    ]
+                    [ i [ class "fa-solid fa-diagram-project" ] []
+                    , text " Flujos en Node-RED"
+                    ]
+                , button
+                    [ classList [ ( "showcase-tab-btn", True ), ( "active", model.showcaseTab == ShowcaseArch ) ]
+                    , onClick (SelectShowcaseTab ShowcaseArch)
+                    ]
+                    [ i [ class "fa-solid fa-server" ] []
+                    , text " Arquitectura & Router IA"
+                    ]
+                ]
+            , div [ class "modal-scrollable-body" ]
+                [ case model.showcaseTab of
+                    ShowcaseVideos ->
+                        viewShowcaseVideos
+
+                    ShowcaseFlows ->
+                        viewShowcaseFlows
+
+                    ShowcaseArch ->
+                        viewShowcaseArch
+                ]
+            , div [ class "modal-footer" ]
+                [ button [ class "btn-modal-close-bottom", onClick CloseModal ]
+                    [ i [ class "fa-solid fa-check" ] []
+                    , text " Finalizar / Cerrar Demostración"
+                    ]
+                ]
+            ]
+        ]
+
+
+viewPongModal : Model -> Html Msg
+viewPongModal model =
+    div [ class "modal-container" ]
+        [ div [ class "modal-backdrop", onClick CloseModal ] []
+        , div [ class "modal-window", attribute "role" "dialog", attribute "aria-modal" "true" ]
+            [ div [ class "modal-header" ]
+                [ div [ class "modal-header-text" ]
+                    [ span [ class "section-tag" ] [ text "DEMOSTRACIÓN DE HARDWARE & MULTITHREADING" ]
+                    , h2 [ class "modal-title" ] [ text "PiPong: Matriz LED 8x8 & Registros 74HC595" ]
+                    , p [ class "modal-desc" ]
+                        [ text "Desarrollo de firmware en MicroPython sobre Raspberry Pi Pico. Multiplexado a nivel de microsegundos con 74HC595 y control de juego en tiempo real." ]
+                    ]
+                , button [ class "btn-close-modal", onClick CloseModal, title "Cerrar ventana emergente" ]
+                    [ i [ class "fa-solid fa-xmark" ] []
+                    , span [] [ text " Cerrar" ]
+                    ]
+                ]
+            , div [ class "showcase-tabs" ]
+                [ button
+                    [ classList [ ( "showcase-tab-btn", True ), ( "active", model.pongTab == PongVideos ) ]
+                    , onClick (SelectPongTab PongVideos)
+                    ]
+                    [ i [ class "fa-solid fa-film" ] []
+                    , text " Videos de Funcionamiento"
+                    ]
+                , button
+                    [ classList [ ( "showcase-tab-btn", True ), ( "active", model.pongTab == PongGallery ) ]
+                    , onClick (SelectPongTab PongGallery)
+                    ]
+                    [ i [ class "fa-solid fa-camera" ] []
+                    , text " Galería del Circuito"
+                    ]
+                , button
+                    [ classList [ ( "showcase-tab-btn", True ), ( "active", model.pongTab == PongArch ) ]
+                    , onClick (SelectPongTab PongArch)
+                    ]
+                    [ i [ class "fa-solid fa-microchip" ] []
+                    , text " Arquitectura & Señales"
+                    ]
+                ]
+            , div [ class "modal-scrollable-body" ]
+                [ case model.pongTab of
+                    PongVideos ->
+                        viewPongVideos
+
+                    PongGallery ->
+                        viewPongGallery
+
+                    PongArch ->
+                        viewPongArch
+                ]
+            , div [ class "modal-footer" ]
+                [ button [ class "btn-modal-close-bottom", onClick CloseModal ]
+                    [ i [ class "fa-solid fa-check" ] []
+                    , text " Finalizar / Cerrar Demostración"
+                    ]
+                ]
+            ]
+        ]
 
 
 viewShowcaseVideos : Html Msg
@@ -724,6 +868,140 @@ viewShowcaseArch =
         ]
 
 
+viewPongVideos : Html Msg
+viewPongVideos =
+    div [ class "videos-showcase-grid" ]
+        [ div [ class "media-card" ]
+            [ div [ class "media-card-header" ]
+                [ span [ class "media-tag" ] [ text "YOUTUBE (6 MIN)" ]
+                , h4 [] [ text "Demostración Completa & Explicación en Video" ]
+                , p [] [ text "Video detallado en YouTube con la explicación completa del circuito, cableado y partida en vivo con ambos jugadores." ]
+                ]
+            , div [ class "video-wrapper" ]
+                [ iframe
+                    [ src "https://www.youtube-nocookie.com/embed/tyRWjlNCxHE"
+                    , attribute "title" "Demostración Pong con 74HC595 y MicroPython"
+                    , attribute "allow" "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    , attribute "allowfullscreen" ""
+                    ]
+                    []
+                ]
+            ]
+        , div [ class "media-card" ]
+            [ div [ class "media-card-header" ]
+                [ span [ class "media-tag" ] [ text "CLIP CORTO" ]
+                , h4 [] [ text "Persistencia de la Visión (POV) & Multiplexado" ]
+                , p [] [ text "Grabación directa de la matriz de LEDs 8x8 mostrando el refresco a 80 microsegundos y la fluidez del juego sin parpadeo." ]
+                ]
+            , div [ class "video-wrapper" ]
+                [ video
+                    [ controls True
+                    , preload "metadata"
+                    , src "assets/video_matriz.mp4"
+                    ]
+                    []
+                ]
+            ]
+        ]
+
+
+viewPongGallery : Html Msg
+viewPongGallery =
+    div [ class "gallery-showcase-grid" ]
+        [ div [ class "media-card" ]
+            [ div [ class "media-card-header" ]
+                [ span [ class "media-tag" ] [ text "PROTOBOARD & PICO" ]
+                , h4 [] [ text "Montaje del Circuito y Cableado" ]
+                , p [] [ text "Conexión de la Raspberry Pi Pico a los dos integrados 74HC595, resistencias de pull-down y pulsadores." ]
+                ]
+            , a [ href "assets/Circuito.jpg", target "_blank", rel "noopener noreferrer", class "img-zoom-wrapper photo-box" ]
+                [ img [ src "assets/Circuito.jpg", class "gallery-img", alt "Circuito del Pong en protoboard" ] []
+                , div [ class "zoom-hint" ] [ i [ class "fa-solid fa-magnifying-glass-plus" ] [], text " Clic para ver foto completa" ]
+                ]
+            ]
+        , div [ class "media-card" ]
+            [ div [ class "media-card-header" ]
+                [ span [ class "media-tag" ] [ text "GAMEPLAY EN ACCIÓN" ]
+                , h4 [] [ text "Partida Activa en Matriz 8x8" ]
+                , p [] [ text "Visualización de las paletas verticales de los jugadores y la bola en trayectoria calculada por el motor de física." ]
+                ]
+            , a [ href "assets/Pong.jpg", target "_blank", rel "noopener noreferrer", class "img-zoom-wrapper photo-box" ]
+                [ img [ src "assets/Pong.jpg", class "gallery-img", alt "Partida de Pong en la matriz" ] []
+                , div [ class "zoom-hint" ] [ i [ class "fa-solid fa-magnifying-glass-plus" ] [], text " Clic para ver foto completa" ]
+                ]
+            ]
+        , div [ class "media-card" ]
+            [ div [ class "media-card-header" ]
+                [ span [ class "media-tag" ] [ text "BITMAP FONTS" ]
+                , h4 [] [ text "Renderizado Tipográfico en Matriz" ]
+                , p [] [ text "Letras y marquesinas ('USFA PONG') decodificadas desde listas de bytes y proyectadas a los registros de desplazamiento." ]
+                ]
+            , a [ href "assets/letra_A.jpg", target "_blank", rel "noopener noreferrer", class "img-zoom-wrapper photo-box" ]
+                [ img [ src "assets/letra_A.jpg", class "gallery-img", alt "Letra en matriz LED" ] []
+                , div [ class "zoom-hint" ] [ i [ class "fa-solid fa-magnifying-glass-plus" ] [], text " Clic para ver foto completa" ]
+                ]
+            ]
+        ]
+
+
+viewPongArch : Html Msg
+viewPongArch =
+    div [ class "arch-showcase-container" ]
+        [ div [ class "arch-specs-grid" ]
+            [ div [ class "arch-spec-box" ]
+                [ h4 [] [ i [ class "fa-solid fa-microchip" ] [], text " Señales del Bus (74HC595)" ]
+                , ul []
+                    [ li [] [ text "GP2 (Data): Entrada de datos seriales (DS)" ]
+                    , li [] [ text "GP3 (Latch): Reloj de almacenamiento (STCP)" ]
+                    , li [] [ text "GP4 (Clock): Reloj de desplazamiento (SHCP)" ]
+                    , li [] [ text "Cascada de 16 bits: 8 bits para ánodos + 8 bits para cátodos" ]
+                    ]
+                ]
+            , div [ class "arch-spec-box" ]
+                [ h4 [] [ i [ class "fa-solid fa-gamepad" ] [], text " Entradas & Controles Físicos" ]
+                , ul []
+                    [ li [] [ text "GP18 / GP19: Jugador 1 (Arriba / Abajo) con pull-down" ]
+                    , li [] [ text "GP20 / GP21: Jugador 2 (Arriba / Abajo) con pull-down" ]
+                    , li [] [ text "GP0: Pulsador de reinicio / inicio (Reset)" ]
+                    , li [] [ text "Lectura periódica en bucle principal con debouncing de botones" ]
+                    ]
+                ]
+            , div [ class "arch-spec-box" ]
+                [ h4 [] [ i [ class "fa-solid fa-bolt" ] [], text " Concurrencia & Motor de Física" ]
+                , ul []
+                    [ li [] [ text "Ejecución paralela mediante _thread.start_new_thread(juego, ())" ]
+                    , li [] [ text "Multiplexado a 80 microsegundos (time.sleep_us(80)) por fila" ]
+                    , li [] [ text "Cálculo de trayectorias y colisiones con álgebra booleana (AND/OR)" ]
+                    , li [] [ text "Dificultad progresiva reduciendo el tiempo de ciclo conforme avanza el juego" ]
+                    ]
+                ]
+            ]
+        , div [ class "arch-code-snippet" ]
+            [ div [ class "snippet-header" ]
+                [ span [] [ text "Control de Registros de Desplazamiento en MicroPython (PiPong.py)" ]
+                , span [ class "snippet-lang" ] [ text "Python" ]
+                ]
+            , pre [ class "code-output" ]
+                [ span [ class "term-dim" ] [ text "def H595(cat, an):\n" ]
+                , span [ class "term-dim" ] [ text "    \"\"\"Envía datos a los dos registros 74HC595 en cascada.\"\"\"\n" ]
+                , text "    # Desplazar 8 bits de ánodos (columnas)\n"
+                , text "    for i in range(8):\n"
+                , text "        pinData.value((an >> i) & 1)\n"
+                , text "        pinClock.value(1)\n"
+                , text "        pinClock.value(0)\n"
+                , text "    # Desplazar 8 bits de cátodos (filas)\n"
+                , text "    for i in range(8):\n"
+                , text "        pinData.value((cat >> i) & 1)\n"
+                , text "        pinClock.value(1)\n"
+                , text "        pinClock.value(0)\n"
+                , span [ class "term-highlight" ] [ text "    # Pulso en Latch para transferir los 16 bits al bus de salida\n" ]
+                , text "    pinLatch.value(1)\n"
+                , text "    pinLatch.value(0)\n"
+                ]
+            ]
+        ]
+
+
 
 -- SKILLS SECTION
 
@@ -742,6 +1020,7 @@ viewSkills =
                 [ skillItem "Haskell" "devicon-haskell-plain" "Funcional puro, FFI, Concurrencia, Tipos"
                 , skillItem "C++" "devicon-cplusplus-plain" "ESP32, Pico, STL, Algoritmos eficientes"
                 , skillItem "C" "devicon-c-plain" "Interoperabilidad kernel y llamadas POSIX"
+                , skillItem "Python" "devicon-python-plain" "MicroPython en RP2040, automatización y scripting"
                 , skillItem "Elm" "devicon-elm-plain" "Frontend web funcional puro sin runtime exceptions"
                 , skillItem "Bash" "devicon-bash-plain" "Automatización avanzada y scripting en GNU/Linux"
                 ]

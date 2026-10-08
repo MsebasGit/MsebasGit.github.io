@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.N.E === region.S.E)
+	if (region.O.F === region.T.F)
 	{
-		return 'on line ' + region.N.E;
+		return 'on line ' + region.O.F;
 	}
-	return 'on lines ' + region.N.E + ' through ' + region.S.E;
+	return 'on lines ' + region.O.F + ' through ' + region.T.F;
 }
 
 
@@ -1861,9 +1861,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ay,
-		impl.aG,
-		impl.aE,
+		impl.az,
+		impl.aH,
+		impl.aF,
 		function() { return function() {} }
 	);
 });
@@ -2728,8 +2728,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		r: func(record.r),
-		O: record.O,
-		L: record.L
+		P: record.P,
+		M: record.M
 	}
 });
 
@@ -2998,10 +2998,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.r;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.O;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.P;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.L) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.M) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3951,11 +3951,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ay,
-		impl.aG,
-		impl.aE,
+		impl.az,
+		impl.aH,
+		impl.aF,
 		function(sendToApp, initialModel) {
-			var view = impl.aH;
+			var view = impl.aI;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3987,12 +3987,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ay,
-		impl.aG,
-		impl.aE,
+		impl.az,
+		impl.aH,
+		impl.aF,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.M && impl.M(sendToApp)
-			var view = impl.aH;
+			var divertHrefToApp = impl.N && impl.N(sendToApp)
+			var view = impl.aI;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -4000,12 +4000,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ar);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.as);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aF) && (_VirtualDom_doc.title = title = doc.aF);
+				(title !== doc.aG) && (_VirtualDom_doc.title = title = doc.aG);
 			});
 		}
 	);
@@ -4061,12 +4061,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aA;
-	var onUrlRequest = impl.aB;
+	var onUrlChange = impl.aB;
+	var onUrlRequest = impl.aC;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		M: function(sendToApp)
+		N: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4082,9 +4082,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ae === next.ae
-							&& curr.W === next.W
-							&& curr.ab.a === next.ab.a
+							&& curr.af === next.af
+							&& curr.X === next.X
+							&& curr.ac.a === next.ac.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4092,13 +4092,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		ay: function(flags)
+		az: function(flags)
 		{
-			return A3(impl.ay, flags, _Browser_getUrl(), key);
+			return A3(impl.az, flags, _Browser_getUrl(), key);
 		},
+		aI: impl.aI,
 		aH: impl.aH,
-		aG: impl.aG,
-		aE: impl.aE
+		aF: impl.aF
 	});
 }
 
@@ -4164,17 +4164,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aw: 'hidden', as: 'visibilitychange' }
+		? { ax: 'hidden', at: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aw: 'mozHidden', as: 'mozvisibilitychange' }
+		? { ax: 'mozHidden', at: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aw: 'msHidden', as: 'msvisibilitychange' }
+		? { ax: 'msHidden', at: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aw: 'webkitHidden', as: 'webkitvisibilitychange' }
-		: { aw: 'hidden', as: 'visibilitychange' };
+		? { ax: 'webkitHidden', at: 'webkitvisibilitychange' }
+		: { ax: 'hidden', at: 'visibilitychange' };
 }
 
 
@@ -4255,12 +4255,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ai: _Browser_getScene(),
-		al: {
-			an: _Browser_window.pageXOffset,
-			ao: _Browser_window.pageYOffset,
-			am: _Browser_doc.documentElement.clientWidth,
-			V: _Browser_doc.documentElement.clientHeight
+		aj: _Browser_getScene(),
+		am: {
+			ao: _Browser_window.pageXOffset,
+			ap: _Browser_window.pageYOffset,
+			an: _Browser_doc.documentElement.clientWidth,
+			W: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4270,8 +4270,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		am: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		V: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		an: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		W: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4294,15 +4294,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ai: {
-				am: node.scrollWidth,
-				V: node.scrollHeight
+			aj: {
+				an: node.scrollWidth,
+				W: node.scrollHeight
 			},
-			al: {
-				an: node.scrollLeft,
-				ao: node.scrollTop,
-				am: node.clientWidth,
-				V: node.clientHeight
+			am: {
+				ao: node.scrollLeft,
+				ap: node.scrollTop,
+				an: node.clientWidth,
+				W: node.clientHeight
 			}
 		};
 	});
@@ -4332,18 +4332,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ai: _Browser_getScene(),
-			al: {
-				an: x,
-				ao: y,
-				am: _Browser_doc.documentElement.clientWidth,
-				V: _Browser_doc.documentElement.clientHeight
+			aj: _Browser_getScene(),
+			am: {
+				ao: x,
+				ap: y,
+				an: _Browser_doc.documentElement.clientWidth,
+				W: _Browser_doc.documentElement.clientHeight
 			},
-			au: {
-				an: x + rect.left,
-				ao: y + rect.top,
-				am: rect.width,
-				V: rect.height
+			av: {
+				ao: x + rect.left,
+				ap: y + rect.top,
+				an: rect.width,
+				W: rect.height
 			}
 		};
 	});
@@ -4380,10 +4380,11 @@ function _Browser_load(url)
 }
 var $elm$core$Basics$False = 1;
 var $author$project$Main$NoModal = 0;
+var $author$project$Main$PongVideos = 0;
 var $author$project$Main$ShowcaseVideos = 0;
 var $author$project$Main$TabAll = 0;
 var $author$project$Main$TabPodman = 0;
-var $author$project$Main$initialModel = {z: 0, n: 0, o: 0, q: false, x: 0};
+var $author$project$Main$initialModel = {A: 0, l: 0, o: 0, q: false, w: 0, y: 0};
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
@@ -4887,7 +4888,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {U: fragment, W: host, _: path, ab: port_, ae: protocol, af: query};
+		return {V: fragment, X: host, aa: path, ac: port_, af: protocol, ag: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5172,19 +5173,19 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $elm$browser$Browser$sandbox = function (impl) {
 	return _Browser_element(
 		{
-			ay: function (_v0) {
-				return _Utils_Tuple2(impl.ay, $elm$core$Platform$Cmd$none);
+			az: function (_v0) {
+				return _Utils_Tuple2(impl.az, $elm$core$Platform$Cmd$none);
 			},
-			aE: function (_v1) {
+			aF: function (_v1) {
 				return $elm$core$Platform$Sub$none;
 			},
-			aG: F2(
+			aH: F2(
 				function (msg, model) {
 					return _Utils_Tuple2(
-						A2(impl.aG, msg, model),
+						A2(impl.aH, msg, model),
 						$elm$core$Platform$Cmd$none);
 				}),
-			aH: impl.aH
+			aI: impl.aI
 		});
 };
 var $elm$core$Basics$not = _Basics_not;
@@ -5200,22 +5201,27 @@ var $author$project$Main$update = F2(
 				var pTab = msg.a;
 				return _Utils_update(
 					model,
-					{n: pTab});
+					{l: pTab});
 			case 2:
 				var sTab = msg.a;
 				return _Utils_update(
 					model,
-					{x: sTab});
+					{y: sTab});
 			case 3:
+				var pTab = msg.a;
+				return _Utils_update(
+					model,
+					{w: pTab});
+			case 4:
 				var modal = msg.a;
 				return _Utils_update(
 					model,
-					{z: modal});
-			case 4:
+					{A: modal});
+			case 5:
 				return _Utils_update(
 					model,
-					{z: 0});
-			case 5:
+					{A: 0});
+			case 6:
 				return _Utils_update(
 					model,
 					{q: !model.q});
@@ -5538,7 +5544,7 @@ var $author$project$Main$viewFooter = A2(
 		]));
 var $author$project$Main$ModalWaterTank = 1;
 var $author$project$Main$OpenModal = function (a) {
-	return {$: 3, a: a};
+	return {$: 4, a: a};
 };
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
@@ -6181,12 +6187,12 @@ var $author$project$Main$viewHero = function (model) {
 					]))
 			]));
 };
-var $author$project$Main$CloseModal = {$: 4};
-var $author$project$Main$SelectShowcaseTab = function (a) {
-	return {$: 2, a: a};
+var $author$project$Main$CloseModal = {$: 5};
+var $author$project$Main$PongArch = 2;
+var $author$project$Main$PongGallery = 1;
+var $author$project$Main$SelectPongTab = function (a) {
+	return {$: 3, a: a};
 };
-var $author$project$Main$ShowcaseArch = 2;
-var $author$project$Main$ShowcaseFlows = 1;
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
 		return A2(
@@ -6198,6 +6204,916 @@ var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $elm$html$Html$Attributes$title = $elm$html$Html$Attributes$stringProperty('title');
 var $elm$html$Html$li = _VirtualDom_node('li');
 var $elm$html$Html$ul = _VirtualDom_node('ul');
+var $author$project$Main$viewPongArch = A2(
+	$elm$html$Html$div,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('arch-showcase-container')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('arch-specs-grid')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('arch-spec-box')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$i,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('fa-solid fa-microchip')
+										]),
+									_List_Nil),
+									$elm$html$Html$text(' Señales del Bus (74HC595)')
+								])),
+							A2(
+							$elm$html$Html$ul,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('GP2 (Data): Entrada de datos seriales (DS)')
+										])),
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('GP3 (Latch): Reloj de almacenamiento (STCP)')
+										])),
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('GP4 (Clock): Reloj de desplazamiento (SHCP)')
+										])),
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Cascada de 16 bits: 8 bits para ánodos + 8 bits para cátodos')
+										]))
+								]))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('arch-spec-box')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$i,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('fa-solid fa-gamepad')
+										]),
+									_List_Nil),
+									$elm$html$Html$text(' Entradas & Controles Físicos')
+								])),
+							A2(
+							$elm$html$Html$ul,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('GP18 / GP19: Jugador 1 (Arriba / Abajo) con pull-down')
+										])),
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('GP20 / GP21: Jugador 2 (Arriba / Abajo) con pull-down')
+										])),
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('GP0: Pulsador de reinicio / inicio (Reset)')
+										])),
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Lectura periódica en bucle principal con debouncing de botones')
+										]))
+								]))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('arch-spec-box')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$i,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('fa-solid fa-bolt')
+										]),
+									_List_Nil),
+									$elm$html$Html$text(' Concurrencia & Motor de Física')
+								])),
+							A2(
+							$elm$html$Html$ul,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Ejecución paralela mediante _thread.start_new_thread(juego, ())')
+										])),
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Multiplexado a 80 microsegundos (time.sleep_us(80)) por fila')
+										])),
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Cálculo de trayectorias y colisiones con álgebra booleana (AND/OR)')
+										])),
+									A2(
+									$elm$html$Html$li,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Dificultad progresiva reduciendo el tiempo de ciclo conforme avanza el juego')
+										]))
+								]))
+						]))
+				])),
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('arch-code-snippet')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('snippet-header')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$span,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Control de Registros de Desplazamiento en MicroPython (PiPong.py)')
+								])),
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('snippet-lang')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Python')
+								]))
+						])),
+					A2(
+					$elm$html$Html$pre,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('code-output')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('term-dim')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('def H595(cat, an):\n')
+								])),
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('term-dim')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('    \"\"\"Envía datos a los dos registros 74HC595 en cascada.\"\"\"\n')
+								])),
+							$elm$html$Html$text('    # Desplazar 8 bits de ánodos (columnas)\n'),
+							$elm$html$Html$text('    for i in range(8):\n'),
+							$elm$html$Html$text('        pinData.value((an >> i) & 1)\n'),
+							$elm$html$Html$text('        pinClock.value(1)\n'),
+							$elm$html$Html$text('        pinClock.value(0)\n'),
+							$elm$html$Html$text('    # Desplazar 8 bits de cátodos (filas)\n'),
+							$elm$html$Html$text('    for i in range(8):\n'),
+							$elm$html$Html$text('        pinData.value((cat >> i) & 1)\n'),
+							$elm$html$Html$text('        pinClock.value(1)\n'),
+							$elm$html$Html$text('        pinClock.value(0)\n'),
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('term-highlight')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('    # Pulso en Latch para transferir los 16 bits al bus de salida\n')
+								])),
+							$elm$html$Html$text('    pinLatch.value(1)\n'),
+							$elm$html$Html$text('    pinLatch.value(0)\n')
+						]))
+				]))
+		]));
+var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
+var $elm$html$Html$img = _VirtualDom_node('img');
+var $elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
+};
+var $author$project$Main$viewPongGallery = A2(
+	$elm$html$Html$div,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('gallery-showcase-grid')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('media-card')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('media-card-header')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('media-tag')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('PROTOBOARD & PICO')
+								])),
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Montaje del Circuito y Cableado')
+								])),
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Conexión de la Raspberry Pi Pico a los dos integrados 74HC595, resistencias de pull-down y pulsadores.')
+								]))
+						])),
+					A2(
+					$elm$html$Html$a,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$href('assets/Circuito.jpg'),
+							$elm$html$Html$Attributes$target('_blank'),
+							$elm$html$Html$Attributes$rel('noopener noreferrer'),
+							$elm$html$Html$Attributes$class('img-zoom-wrapper photo-box')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$img,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$src('assets/Circuito.jpg'),
+									$elm$html$Html$Attributes$class('gallery-img'),
+									$elm$html$Html$Attributes$alt('Circuito del Pong en protoboard')
+								]),
+							_List_Nil),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('zoom-hint')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$i,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('fa-solid fa-magnifying-glass-plus')
+										]),
+									_List_Nil),
+									$elm$html$Html$text(' Clic para ver foto completa')
+								]))
+						]))
+				])),
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('media-card')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('media-card-header')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('media-tag')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('GAMEPLAY EN ACCIÓN')
+								])),
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Partida Activa en Matriz 8x8')
+								])),
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Visualización de las paletas verticales de los jugadores y la bola en trayectoria calculada por el motor de física.')
+								]))
+						])),
+					A2(
+					$elm$html$Html$a,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$href('assets/Pong.jpg'),
+							$elm$html$Html$Attributes$target('_blank'),
+							$elm$html$Html$Attributes$rel('noopener noreferrer'),
+							$elm$html$Html$Attributes$class('img-zoom-wrapper photo-box')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$img,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$src('assets/Pong.jpg'),
+									$elm$html$Html$Attributes$class('gallery-img'),
+									$elm$html$Html$Attributes$alt('Partida de Pong en la matriz')
+								]),
+							_List_Nil),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('zoom-hint')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$i,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('fa-solid fa-magnifying-glass-plus')
+										]),
+									_List_Nil),
+									$elm$html$Html$text(' Clic para ver foto completa')
+								]))
+						]))
+				])),
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('media-card')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('media-card-header')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('media-tag')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('BITMAP FONTS')
+								])),
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Renderizado Tipográfico en Matriz')
+								])),
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Letras y marquesinas (\'USFA PONG\') decodificadas desde listas de bytes y proyectadas a los registros de desplazamiento.')
+								]))
+						])),
+					A2(
+					$elm$html$Html$a,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$href('assets/letra_A.jpg'),
+							$elm$html$Html$Attributes$target('_blank'),
+							$elm$html$Html$Attributes$rel('noopener noreferrer'),
+							$elm$html$Html$Attributes$class('img-zoom-wrapper photo-box')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$img,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$src('assets/letra_A.jpg'),
+									$elm$html$Html$Attributes$class('gallery-img'),
+									$elm$html$Html$Attributes$alt('Letra en matriz LED')
+								]),
+							_List_Nil),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('zoom-hint')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$i,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('fa-solid fa-magnifying-glass-plus')
+										]),
+									_List_Nil),
+									$elm$html$Html$text(' Clic para ver foto completa')
+								]))
+						]))
+				]))
+		]));
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$bool(bool));
+	});
+var $elm$html$Html$Attributes$controls = $elm$html$Html$Attributes$boolProperty('controls');
+var $elm$html$Html$iframe = _VirtualDom_node('iframe');
+var $elm$html$Html$Attributes$preload = $elm$html$Html$Attributes$stringProperty('preload');
+var $elm$html$Html$video = _VirtualDom_node('video');
+var $author$project$Main$viewPongVideos = A2(
+	$elm$html$Html$div,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('videos-showcase-grid')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('media-card')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('media-card-header')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('media-tag')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('YOUTUBE (6 MIN)')
+								])),
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Demostración Completa & Explicación en Video')
+								])),
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Video detallado en YouTube con la explicación completa del circuito, cableado y partida en vivo con ambos jugadores.')
+								]))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('video-wrapper')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$iframe,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$src('https://www.youtube-nocookie.com/embed/tyRWjlNCxHE'),
+									A2($elm$html$Html$Attributes$attribute, 'title', 'Demostración Pong con 74HC595 y MicroPython'),
+									A2($elm$html$Html$Attributes$attribute, 'allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'),
+									A2($elm$html$Html$Attributes$attribute, 'allowfullscreen', '')
+								]),
+							_List_Nil)
+						]))
+				])),
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('media-card')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('media-card-header')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('media-tag')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('CLIP CORTO')
+								])),
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Persistencia de la Visión (POV) & Multiplexado')
+								])),
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Grabación directa de la matriz de LEDs 8x8 mostrando el refresco a 80 microsegundos y la fluidez del juego sin parpadeo.')
+								]))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('video-wrapper')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$video,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$controls(true),
+									$elm$html$Html$Attributes$preload('metadata'),
+									$elm$html$Html$Attributes$src('assets/video_matriz.mp4')
+								]),
+							_List_Nil)
+						]))
+				]))
+		]));
+var $author$project$Main$viewPongModal = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('modal-container')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('modal-backdrop'),
+						$elm$html$Html$Events$onClick($author$project$Main$CloseModal)
+					]),
+				_List_Nil),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('modal-window'),
+						A2($elm$html$Html$Attributes$attribute, 'role', 'dialog'),
+						A2($elm$html$Html$Attributes$attribute, 'aria-modal', 'true')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('modal-header')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('modal-header-text')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$span,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('section-tag')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('DEMOSTRACIÓN DE HARDWARE & MULTITHREADING')
+											])),
+										A2(
+										$elm$html$Html$h2,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('modal-title')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('PiPong: Matriz LED 8x8 & Registros 74HC595')
+											])),
+										A2(
+										$elm$html$Html$p,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('modal-desc')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Desarrollo de firmware en MicroPython sobre Raspberry Pi Pico. Multiplexado a nivel de microsegundos con 74HC595 y control de juego en tiempo real.')
+											]))
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn-close-modal'),
+										$elm$html$Html$Events$onClick($author$project$Main$CloseModal),
+										$elm$html$Html$Attributes$title('Cerrar ventana emergente')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$i,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('fa-solid fa-xmark')
+											]),
+										_List_Nil),
+										A2(
+										$elm$html$Html$span,
+										_List_Nil,
+										_List_fromArray(
+											[
+												$elm$html$Html$text(' Cerrar')
+											]))
+									]))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('showcase-tabs')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$classList(
+										_List_fromArray(
+											[
+												_Utils_Tuple2('showcase-tab-btn', true),
+												_Utils_Tuple2('active', !model.w)
+											])),
+										$elm$html$Html$Events$onClick(
+										$author$project$Main$SelectPongTab(0))
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$i,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('fa-solid fa-film')
+											]),
+										_List_Nil),
+										$elm$html$Html$text(' Videos de Funcionamiento')
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$classList(
+										_List_fromArray(
+											[
+												_Utils_Tuple2('showcase-tab-btn', true),
+												_Utils_Tuple2('active', model.w === 1)
+											])),
+										$elm$html$Html$Events$onClick(
+										$author$project$Main$SelectPongTab(1))
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$i,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('fa-solid fa-camera')
+											]),
+										_List_Nil),
+										$elm$html$Html$text(' Galería del Circuito')
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$classList(
+										_List_fromArray(
+											[
+												_Utils_Tuple2('showcase-tab-btn', true),
+												_Utils_Tuple2('active', model.w === 2)
+											])),
+										$elm$html$Html$Events$onClick(
+										$author$project$Main$SelectPongTab(2))
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$i,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('fa-solid fa-microchip')
+											]),
+										_List_Nil),
+										$elm$html$Html$text(' Arquitectura & Señales')
+									]))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('modal-scrollable-body')
+							]),
+						_List_fromArray(
+							[
+								function () {
+								var _v0 = model.w;
+								switch (_v0) {
+									case 0:
+										return $author$project$Main$viewPongVideos;
+									case 1:
+										return $author$project$Main$viewPongGallery;
+									default:
+										return $author$project$Main$viewPongArch;
+								}
+							}()
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('modal-footer')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn-modal-close-bottom'),
+										$elm$html$Html$Events$onClick($author$project$Main$CloseModal)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$i,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('fa-solid fa-check')
+											]),
+										_List_Nil),
+										$elm$html$Html$text(' Finalizar / Cerrar Demostración')
+									]))
+							]))
+					]))
+			]));
+};
+var $author$project$Main$SelectShowcaseTab = function (a) {
+	return {$: 2, a: a};
+};
+var $author$project$Main$ShowcaseArch = 2;
+var $author$project$Main$ShowcaseFlows = 1;
 var $author$project$Main$viewShowcaseArch = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -6459,14 +7375,6 @@ var $author$project$Main$viewShowcaseArch = A2(
 						]))
 				]))
 		]));
-var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
-var $elm$html$Html$img = _VirtualDom_node('img');
-var $elm$html$Html$Attributes$src = function (url) {
-	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'src',
-		_VirtualDom_noJavaScriptOrHtmlUri(url));
-};
 var $author$project$Main$viewShowcaseFlows = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -6636,17 +7544,6 @@ var $author$project$Main$viewShowcaseFlows = A2(
 						]))
 				]))
 		]));
-var $elm$json$Json$Encode$bool = _Json_wrap;
-var $elm$html$Html$Attributes$boolProperty = F2(
-	function (key, bool) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$bool(bool));
-	});
-var $elm$html$Html$Attributes$controls = $elm$html$Html$Attributes$boolProperty('controls');
-var $elm$html$Html$Attributes$preload = $elm$html$Html$Attributes$stringProperty('preload');
-var $elm$html$Html$video = _VirtualDom_node('video');
 var $author$project$Main$viewShowcaseVideos = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -6776,243 +7673,250 @@ var $author$project$Main$viewShowcaseVideos = A2(
 						]))
 				]))
 		]));
+var $author$project$Main$viewWaterTankModal = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('modal-container')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('modal-backdrop'),
+						$elm$html$Html$Events$onClick($author$project$Main$CloseModal)
+					]),
+				_List_Nil),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('modal-window'),
+						A2($elm$html$Html$Attributes$attribute, 'role', 'dialog'),
+						A2($elm$html$Html$Attributes$attribute, 'aria-modal', 'true')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('modal-header')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('modal-header-text')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$span,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('section-tag')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('DEMOSTRACIÓN EN VIVO & ARQUITECTURA')
+											])),
+										A2(
+										$elm$html$Html$h2,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('modal-title')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Tanque IoT: Hardware, Edge AI & Node-RED')
+											])),
+										A2(
+										$elm$html$Html$p,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('modal-desc')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Sistema integral de telemetría y control automático con ESP32, broker MQTT Mosquitto, API Gateway en Node-RED, base de datos SQLite y modelo phi3.5:latest vía Telegram.')
+											]))
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn-close-modal'),
+										$elm$html$Html$Events$onClick($author$project$Main$CloseModal),
+										$elm$html$Html$Attributes$title('Cerrar ventana emergente')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$i,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('fa-solid fa-xmark')
+											]),
+										_List_Nil),
+										A2(
+										$elm$html$Html$span,
+										_List_Nil,
+										_List_fromArray(
+											[
+												$elm$html$Html$text(' Cerrar')
+											]))
+									]))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('showcase-tabs')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$classList(
+										_List_fromArray(
+											[
+												_Utils_Tuple2('showcase-tab-btn', true),
+												_Utils_Tuple2('active', !model.y)
+											])),
+										$elm$html$Html$Events$onClick(
+										$author$project$Main$SelectShowcaseTab(0))
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$i,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('fa-solid fa-film')
+											]),
+										_List_Nil),
+										$elm$html$Html$text(' Videos de Funcionamiento')
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$classList(
+										_List_fromArray(
+											[
+												_Utils_Tuple2('showcase-tab-btn', true),
+												_Utils_Tuple2('active', model.y === 1)
+											])),
+										$elm$html$Html$Events$onClick(
+										$author$project$Main$SelectShowcaseTab(1))
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$i,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('fa-solid fa-diagram-project')
+											]),
+										_List_Nil),
+										$elm$html$Html$text(' Flujos en Node-RED')
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$classList(
+										_List_fromArray(
+											[
+												_Utils_Tuple2('showcase-tab-btn', true),
+												_Utils_Tuple2('active', model.y === 2)
+											])),
+										$elm$html$Html$Events$onClick(
+										$author$project$Main$SelectShowcaseTab(2))
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$i,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('fa-solid fa-server')
+											]),
+										_List_Nil),
+										$elm$html$Html$text(' Arquitectura & Router IA')
+									]))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('modal-scrollable-body')
+							]),
+						_List_fromArray(
+							[
+								function () {
+								var _v0 = model.y;
+								switch (_v0) {
+									case 0:
+										return $author$project$Main$viewShowcaseVideos;
+									case 1:
+										return $author$project$Main$viewShowcaseFlows;
+									default:
+										return $author$project$Main$viewShowcaseArch;
+								}
+							}()
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('modal-footer')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('btn-modal-close-bottom'),
+										$elm$html$Html$Events$onClick($author$project$Main$CloseModal)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$i,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('fa-solid fa-check')
+											]),
+										_List_Nil),
+										$elm$html$Html$text(' Finalizar / Cerrar Demostración')
+									]))
+							]))
+					]))
+			]));
+};
 var $author$project$Main$viewModal = function (model) {
-	var _v0 = model.z;
-	if (!_v0) {
-		return $elm$html$Html$text('');
-	} else {
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('modal-container')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('modal-backdrop'),
-							$elm$html$Html$Events$onClick($author$project$Main$CloseModal)
-						]),
-					_List_Nil),
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('modal-window'),
-							A2($elm$html$Html$Attributes$attribute, 'role', 'dialog'),
-							A2($elm$html$Html$Attributes$attribute, 'aria-modal', 'true')
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('modal-header')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('modal-header-text')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$span,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('section-tag')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('DEMOSTRACIÓN EN VIVO & ARQUITECTURA')
-												])),
-											A2(
-											$elm$html$Html$h2,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('modal-title')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('Tanque IoT: Hardware, Edge AI & Node-RED')
-												])),
-											A2(
-											$elm$html$Html$p,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('modal-desc')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('Sistema integral de telemetría y control automático con ESP32, broker MQTT Mosquitto, API Gateway en Node-RED, base de datos SQLite y modelo phi3.5:latest vía Telegram.')
-												]))
-										])),
-									A2(
-									$elm$html$Html$button,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('btn-close-modal'),
-											$elm$html$Html$Events$onClick($author$project$Main$CloseModal),
-											$elm$html$Html$Attributes$title('Cerrar ventana emergente')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$i,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('fa-solid fa-xmark')
-												]),
-											_List_Nil),
-											A2(
-											$elm$html$Html$span,
-											_List_Nil,
-											_List_fromArray(
-												[
-													$elm$html$Html$text(' Cerrar')
-												]))
-										]))
-								])),
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('showcase-tabs')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$button,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$classList(
-											_List_fromArray(
-												[
-													_Utils_Tuple2('showcase-tab-btn', true),
-													_Utils_Tuple2('active', !model.x)
-												])),
-											$elm$html$Html$Events$onClick(
-											$author$project$Main$SelectShowcaseTab(0))
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$i,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('fa-solid fa-film')
-												]),
-											_List_Nil),
-											$elm$html$Html$text(' Videos de Funcionamiento')
-										])),
-									A2(
-									$elm$html$Html$button,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$classList(
-											_List_fromArray(
-												[
-													_Utils_Tuple2('showcase-tab-btn', true),
-													_Utils_Tuple2('active', model.x === 1)
-												])),
-											$elm$html$Html$Events$onClick(
-											$author$project$Main$SelectShowcaseTab(1))
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$i,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('fa-solid fa-diagram-project')
-												]),
-											_List_Nil),
-											$elm$html$Html$text(' Flujos en Node-RED')
-										])),
-									A2(
-									$elm$html$Html$button,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$classList(
-											_List_fromArray(
-												[
-													_Utils_Tuple2('showcase-tab-btn', true),
-													_Utils_Tuple2('active', model.x === 2)
-												])),
-											$elm$html$Html$Events$onClick(
-											$author$project$Main$SelectShowcaseTab(2))
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$i,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('fa-solid fa-server')
-												]),
-											_List_Nil),
-											$elm$html$Html$text(' Arquitectura & Router IA')
-										]))
-								])),
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('modal-scrollable-body')
-								]),
-							_List_fromArray(
-								[
-									function () {
-									var _v1 = model.x;
-									switch (_v1) {
-										case 0:
-											return $author$project$Main$viewShowcaseVideos;
-										case 1:
-											return $author$project$Main$viewShowcaseFlows;
-										default:
-											return $author$project$Main$viewShowcaseArch;
-									}
-								}()
-								])),
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class('modal-footer')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$button,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('btn-modal-close-bottom'),
-											$elm$html$Html$Events$onClick($author$project$Main$CloseModal)
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$i,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('fa-solid fa-check')
-												]),
-											_List_Nil),
-											$elm$html$Html$text(' Finalizar / Cerrar Demostración')
-										]))
-								]))
-						]))
-				]));
+	var _v0 = model.A;
+	switch (_v0) {
+		case 0:
+			return $elm$html$Html$text('');
+		case 1:
+			return $author$project$Main$viewWaterTankModal(model);
+		default:
+			return $author$project$Main$viewPongModal(model);
 	}
 };
-var $author$project$Main$ToggleTheme = {$: 5};
+var $author$project$Main$ModalPong = 2;
+var $author$project$Main$ToggleTheme = {$: 6};
 var $elm$html$Html$header = _VirtualDom_node('header');
 var $elm$html$Html$nav = _VirtualDom_node('nav');
 var $author$project$Main$viewNavbar = function (model) {
@@ -7091,6 +7995,18 @@ var $author$project$Main$viewNavbar = function (model) {
 								$elm$html$Html$text('Tanque IoT (Demo)')
 							])),
 						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('nav-link-btn'),
+								$elm$html$Html$Events$onClick(
+								$author$project$Main$OpenModal(2))
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Pong 74HC595 (Demo)')
+							])),
+						A2(
 						$elm$html$Html$a,
 						_List_fromArray(
 							[
@@ -7159,6 +8075,7 @@ var $author$project$Main$SelectProjectTab = function (a) {
 };
 var $author$project$Main$TabFuyuGpio = 1;
 var $author$project$Main$TabFuyuGpioDirect = 2;
+var $author$project$Main$TabPong = 4;
 var $author$project$Main$TabWaterTank = 3;
 var $elm$html$Html$code = _VirtualDom_node('code');
 var $elm$html$Html$h3 = _VirtualDom_node('h3');
@@ -7882,6 +8799,298 @@ var $author$project$Main$cardFuyuGpioDirect = A2(
 						]))
 				]))
 		]));
+var $author$project$Main$cardPong74HC595 = A2(
+	$elm$html$Html$div,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('project-card featured')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('project-card-header')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('project-badges')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('badge')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('MicroPython')
+								])),
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('badge')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('RP2040 (Pico)')
+								])),
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('badge')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('74HC595 (Cascada)')
+								])),
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('badge')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Matriz LED 8x8')
+								])),
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('badge')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Multithreading')
+								])),
+							A2(
+							$elm$html$Html$span,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('badge badge-accent')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Hardware')
+								]))
+						])),
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('card-ext-btn'),
+							$elm$html$Html$Events$onClick(
+							$author$project$Main$OpenModal(2)),
+							$elm$html$Html$Attributes$title('Abrir Demostración & Hardware')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$i,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('fa-solid fa-circle-play')
+								]),
+							_List_Nil)
+						]))
+				])),
+			A2(
+			$elm$html$Html$h3,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('project-title')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('PiPong: Pong en Hardware con Registros 74HC595')
+				])),
+			A2(
+			$elm$html$Html$p,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('project-subtitle')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Juego arcade interactivo en tiempo real con Raspberry Pi Pico, matriz LED y MicroPython')
+				])),
+			A2(
+			$elm$html$Html$p,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('project-summary')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Sistema de juego Pong bare-metal implementado en '),
+					A2(
+					$elm$html$Html$strong,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('MicroPython')
+						])),
+					$elm$html$Html$text(' sobre microcontrolador '),
+					A2(
+					$elm$html$Html$strong,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Raspberry Pi Pico (RP2040)')
+						])),
+					$elm$html$Html$text('. Control y multiplexado dinámico de una matriz de LEDs 8x8 mediante dos registros de desplazamiento '),
+					A2(
+					$elm$html$Html$strong,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('74HC595 en cascada')
+						])),
+					$elm$html$Html$text(', persistencia de visión sin parpadeo y arquitectura de ejecución concurrente con '),
+					A2(
+					$elm$html$Html$code,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('_thread')
+						])),
+					$elm$html$Html$text('.')
+				])),
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('project-spec-box')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$h4,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('spec-box-title')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Fundamentos Técnicos & Arquitectura Embebida:')
+						])),
+					A2(
+					$elm$html$Html$ul,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('spec-list')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Expansión de E/S con 74HC595: Control independiente de 8 ánodos y 8 cátodos usando solo 3 pines del microcontrolador (Data, Clock, Latch).')
+								])),
+							A2(
+							$elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Concurrencia Dual-Core (_thread): Hilo dedicado para el refresco y multiplexado a alta frecuencia (80 µs), desacoplado del muestreo asíncrono de los 5 pulsadores.')
+								])),
+							A2(
+							$elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Motor de Física y Colisiones Bitwise: Álgebra booleana y desplazamientos de bits (<<, >>) para las coordenadas de la bola, rebotes y detección de paletas.')
+								])),
+							A2(
+							$elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Renderizado de Fuentes Bitmap: Marquesinas deslizantes con texto (\'USFA PONG\') y pantallas de victoria (\'P1/P2 WON\') codificadas en matrices de bytes.')
+								]))
+						]))
+				])),
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('project-card-footer')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('btn-modal-trigger'),
+							$elm$html$Html$Events$onClick(
+							$author$project$Main$OpenModal(2))
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$i,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('fa-solid fa-circle-play')
+								]),
+							_List_Nil),
+							$elm$html$Html$text(' Ver Demostración en Video & Galería')
+						])),
+					A2(
+					$elm$html$Html$a,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$href('https://github.com/MsebasGit/Pong-with-74HC595'),
+							$elm$html$Html$Attributes$target('_blank'),
+							$elm$html$Html$Attributes$rel('noopener noreferrer'),
+							$elm$html$Html$Attributes$class('project-link')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$i,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('fa-brands fa-github')
+								]),
+							_List_Nil),
+							$elm$html$Html$text(' Repositorio GitHub')
+						])),
+					A2(
+					$elm$html$Html$a,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$href('https://youtu.be/tyRWjlNCxHE'),
+							$elm$html$Html$Attributes$target('_blank'),
+							$elm$html$Html$Attributes$rel('noopener noreferrer'),
+							$elm$html$Html$Attributes$class('project-link')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$i,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('fa-brands fa-youtube')
+								]),
+							_List_Nil),
+							$elm$html$Html$text(' Video en YouTube')
+						]))
+				]))
+		]));
 var $author$project$Main$cardWaterTankIoT = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
@@ -8130,16 +9339,19 @@ var $author$project$Main$filteredProjectCards = function (tab) {
 	switch (tab) {
 		case 0:
 			return _List_fromArray(
-				[$author$project$Main$cardFuyuGpio, $author$project$Main$cardFuyuGpioDirect, $author$project$Main$cardWaterTankIoT]);
+				[$author$project$Main$cardFuyuGpio, $author$project$Main$cardFuyuGpioDirect, $author$project$Main$cardWaterTankIoT, $author$project$Main$cardPong74HC595]);
 		case 1:
 			return _List_fromArray(
 				[$author$project$Main$cardFuyuGpio]);
 		case 2:
 			return _List_fromArray(
 				[$author$project$Main$cardFuyuGpioDirect]);
-		default:
+		case 3:
 			return _List_fromArray(
 				[$author$project$Main$cardWaterTankIoT]);
+		default:
+			return _List_fromArray(
+				[$author$project$Main$cardPong74HC595]);
 	}
 };
 var $author$project$Main$viewProjects = function (model) {
@@ -8207,14 +9419,14 @@ var $author$project$Main$viewProjects = function (model) {
 								_List_fromArray(
 									[
 										_Utils_Tuple2('filter-btn', true),
-										_Utils_Tuple2('active', !model.n)
+										_Utils_Tuple2('active', !model.l)
 									])),
 								$elm$html$Html$Events$onClick(
 								$author$project$Main$SelectProjectTab(0))
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('Todos los Proyectos (3)')
+								$elm$html$Html$text('Todos los Proyectos (4)')
 							])),
 						A2(
 						$elm$html$Html$button,
@@ -8224,7 +9436,7 @@ var $author$project$Main$viewProjects = function (model) {
 								_List_fromArray(
 									[
 										_Utils_Tuple2('filter-btn', true),
-										_Utils_Tuple2('active', model.n === 1)
+										_Utils_Tuple2('active', model.l === 1)
 									])),
 								$elm$html$Html$Events$onClick(
 								$author$project$Main$SelectProjectTab(1))
@@ -8241,7 +9453,7 @@ var $author$project$Main$viewProjects = function (model) {
 								_List_fromArray(
 									[
 										_Utils_Tuple2('filter-btn', true),
-										_Utils_Tuple2('active', model.n === 2)
+										_Utils_Tuple2('active', model.l === 2)
 									])),
 								$elm$html$Html$Events$onClick(
 								$author$project$Main$SelectProjectTab(2))
@@ -8258,7 +9470,7 @@ var $author$project$Main$viewProjects = function (model) {
 								_List_fromArray(
 									[
 										_Utils_Tuple2('filter-btn', true),
-										_Utils_Tuple2('active', model.n === 3)
+										_Utils_Tuple2('active', model.l === 3)
 									])),
 								$elm$html$Html$Events$onClick(
 								$author$project$Main$SelectProjectTab(3))
@@ -8266,6 +9478,23 @@ var $author$project$Main$viewProjects = function (model) {
 						_List_fromArray(
 							[
 								$elm$html$Html$text('Sistema IoT Tanque de Agua')
+							])),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$classList(
+								_List_fromArray(
+									[
+										_Utils_Tuple2('filter-btn', true),
+										_Utils_Tuple2('active', model.l === 4)
+									])),
+								$elm$html$Html$Events$onClick(
+								$author$project$Main$SelectProjectTab(4))
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Pong 74HC595 (MicroPython)')
 							]))
 					])),
 				A2(
@@ -8274,7 +9503,7 @@ var $author$project$Main$viewProjects = function (model) {
 					[
 						$elm$html$Html$Attributes$class('projects-grid')
 					]),
-				$author$project$Main$filteredProjectCards(model.n))
+				$author$project$Main$filteredProjectCards(model.l))
 			]));
 };
 var $author$project$Main$skillCategory = F3(
@@ -8432,6 +9661,7 @@ var $author$project$Main$viewSkills = A2(
 							A3($author$project$Main$skillItem, 'Haskell', 'devicon-haskell-plain', 'Funcional puro, FFI, Concurrencia, Tipos'),
 							A3($author$project$Main$skillItem, 'C++', 'devicon-cplusplus-plain', 'ESP32, Pico, STL, Algoritmos eficientes'),
 							A3($author$project$Main$skillItem, 'C', 'devicon-c-plain', 'Interoperabilidad kernel y llamadas POSIX'),
+							A3($author$project$Main$skillItem, 'Python', 'devicon-python-plain', 'MicroPython en RP2040, automatización y scripting'),
 							A3($author$project$Main$skillItem, 'Elm', 'devicon-elm-plain', 'Frontend web funcional puro sin runtime exceptions'),
 							A3($author$project$Main$skillItem, 'Bash', 'devicon-bash-plain', 'Automatización avanzada y scripting en GNU/Linux')
 						])),
@@ -8483,7 +9713,7 @@ var $author$project$Main$view = function (model) {
 						_Utils_Tuple2('app-container', true),
 						_Utils_Tuple2('theme-paper', model.q),
 						_Utils_Tuple2('theme-slackware', !model.q),
-						_Utils_Tuple2('modal-open', !(!model.z))
+						_Utils_Tuple2('modal-open', !(!model.A))
 					]))
 			]),
 		_List_fromArray(
@@ -8498,6 +9728,6 @@ var $author$project$Main$view = function (model) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$sandbox(
-	{ay: $author$project$Main$initialModel, aG: $author$project$Main$update, aH: $author$project$Main$view});
+	{az: $author$project$Main$initialModel, aH: $author$project$Main$update, aI: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
